@@ -1,4 +1,5 @@
 import databases
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 
 from .serializer import *
@@ -82,34 +83,70 @@ from rest_framework.response import Response
 
 ## using api class-based view
 
-class lis(APIView):
-    def get(self,request):
-        serializer=User.objects.all()
-        serializer1=RegistrationSerializer(serializer,many=True)
-        return Response(serializer1.data)
 
-    def post(self,request):
-        serializers2=RegistrationSerializer(data=request.data)
-        if serializers2.is_valid():
-            serializers2.save()
-            return Response({'data':'data save success'})
-        return Response({'data':'data not save'})
+# class lis(APIView):
+#     def get(self,request):
+#         serializer=User.objects.all()
+#         serializer1=RegistrationSerializer(serializer,many=True)
+#         return Response(serializer1.data)
+#
+#     def post(self,request):
+#         serializers2=RegistrationSerializer(data=request.data)
+#         if serializers2.is_valid():
+#             serializers2.save()
+#             return Response({'data':'data save success'})
+#         return Response({'data':'data not save'})
+#
+# class lisdetails(APIView):
+#     def get(self,request,pk,format=None):
+#         a=User.objects.get(pk=pk)
+#         b=RegistrationSerializer(a)
+#         return Response(b.data)
+#
+#     def put(self,request,pk):
+#         a=User.objects.get(pk=pk)
+#         b=RegistrationSerializer(a,data=request.data)
+#         if b.is_valid():
+#             b.save()
+#             return Response({'data1':b.data,'data':'data is update'})
+#         return Response({'data':'data not update'})
+#
+#     def delete(self,request,pk):
+#         a=User.objects.get(pk=pk)
+#         a.delete()
+#         return Response({'data':'data delete'})
 
-class lisdetails(APIView):
-    def get(self,request,pk,format=None):
-        a=User.objects.get(pk=pk)
-        b=RegistrationSerializer(a)
-        return Response(b.data)
 
-    def put(self,request,pk):
-        a=User.objects.get(pk=pk)
-        b=RegistrationSerializer(a,data=request.data)
-        if b.is_valid():
-            b.save()
-            return Response({'data1':b.data,'data':'data is update'})
-        return Response({'data':'data not update'})
+# simple funtion
 
-    def delete(self,request,pk):
-        a=User.objects.get(pk=pk)
-        a.delete()
-        return Response({'data':'data delete'})
+@api_view(["GET"])
+def alldata(request):
+    b=User.objects.all()
+    c=RegistrationSerializer(b,many=True)
+    return Response(c.data)
+
+@api_view(['POST'])
+def datacreate(request):
+    c=RegistrationSerializer(data=request.data)
+    if c.is_valid():
+        c.save()
+        return Response({'data':'data is save success'})
+    return Response({'data':'data is not save'})
+
+@api_view(['PUT'])
+def dataupdate(request,pk):
+    c=User.objects.get(pk=pk)
+    v=RegistrationSerializer(c,data=request.data)
+    if v.is_valid():
+        v.save()
+        return Response({'data':'data is update success'})
+    return Response({'data':'data is not update'})
+
+@api_view(['GET'])
+def datadelete(request,pk):
+    c=User.objects.get(pk=pk)
+    if c:
+        c.delete()
+        return Response({'data':'data is delete'})
+    else:
+        return Response({'data':'data not present'})
