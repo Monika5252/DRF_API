@@ -1,0 +1,18 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="pymysql.cursors" />
+          <option value="loginlogout.models.User.objects" />
+          <option value="home.models.singup.objects" />
+          <option value="rest_framework_simplejwt.views.Record" />
+          <option value="rest_framework_simplejwt.views.Login" />
+          <option value="rest_framework_simplejwt.views.Logout" />
+          <option value="employee.models.Employees.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
