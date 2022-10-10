@@ -12,5 +12,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validate_data)
 
 
+class Loginserializer(serializers.ModelSerializer):
+    email=serializers.EmailField(max_length=200)
+    class Meta:
+        model=User
+        fields=['email','password']
 
 

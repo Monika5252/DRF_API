@@ -21,7 +21,7 @@ class UserModelAdmin(BaseUserAdmin):
   ordering = ('email', 'id')
   filter_horizontal = ()
 
-
+admin.site.register(User, UserModelAdmin)
 
 @admin.register(Demo)
 class demoadmin(admin.ModelAdmin):
