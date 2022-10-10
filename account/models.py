@@ -13,7 +13,7 @@ class MyUserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             name=name,
-            mobile=mobile
+            mobile=mobile,
         )
 
         user.set_password(password)
@@ -43,7 +43,7 @@ class User(AbstractBaseUser):
     )
     name=models.CharField(max_length=50)
     mobile=models.PositiveBigIntegerField()
-    # is_active = models.BooleanField(default=True)
+    is_verify = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     objects = MyUserManager()
     USERNAME_FIELD = 'email'
@@ -67,6 +67,7 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
 
 class Demo(models.Model):
     name=models.CharField(max_length=50)

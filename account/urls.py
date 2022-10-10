@@ -1,7 +1,7 @@
 from django.urls import path, include
 # from .views import
 from . import  views
-from .views import LoginView
+from .views import LoginView, validate
 
 urlpatterns = [
     # path('api/',RegistrtionView.as_view()),
@@ -19,6 +19,7 @@ urlpatterns = [
     path('dataupdate/<int:pk>/',views.dataupdate),
     path('datadelete/<int:pk>/',views.datadelete),
     path('login/',LoginView.as_view(), name='login'),
+    path('validate/<uid>/<token>/',views.validate, name='login'),
 
 ]
 
