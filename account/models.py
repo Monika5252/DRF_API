@@ -1,3 +1,4 @@
+import django
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
@@ -68,9 +69,8 @@ class User(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
-
-class Demo(models.Model):
-    name=models.CharField(max_length=50)
-    email=models.EmailField(max_length=230)
-    mobile=models.CharField(max_length=220)
+class OtpManager(models.Model):
+    userId=models.OneToOneField(User, on_delete=models.CASCADE)
+    motp_counter=models.IntegerField(default=0)
+    motp_timer=models.DateTimeField(default=django.utils.timezone.now)
 

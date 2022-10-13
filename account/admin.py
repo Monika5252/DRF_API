@@ -23,9 +23,9 @@ class UserModelAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserModelAdmin)
 
-@admin.register(Demo)
-class demoadmin(admin.ModelAdmin):
-    list_display = ['id','name']
+# @admin.register(Demo)
+# class demoadmin(admin.ModelAdmin):
+#     list_display = ['id','name']
 
 # # from django.contrib.auth import admin
 # from django.contrib import admin

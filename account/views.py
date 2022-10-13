@@ -1,3 +1,6 @@
+from datetime import datetime
+from random import random
+
 import databases
 import permission as permission
 from django.contrib.auth import authenticate
@@ -5,6 +8,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
+from django.template.backends import django
 from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from jwt.utils import force_bytes
@@ -271,7 +275,41 @@ def validate(request,uid,token):
     user.is_verify = True
     user.save()
     # return Response({'msg': 'Account is verified Please Login'})
-    return HttpResponse('<p>Your account has been successfully verified. Please <a href="http://127.0.0.1:8001/login/">click here</a> to login</p>')
+    return HttpResponse('<p>Your account has been successfully verified. Please <a href="http://127.0.0.1:8000/login/">click here</a> to login</p>')
   except DjangoUnicodeDecodeError as identifier:
     PasswordResetTokenGenerator().check_token(user, token)
     raise serializers.ValidationError('Token is not Valid or Expired')
+
+
+
+class UserLoginOTPSendMobView( generics.GenericAPIView,APIView):
+  # renderer_classes = [UserRenderer]
+  queryset = User.objects.all()
+  serializer_class = UserLoginOTPSendMobViewSerializer
+  permission_classes = (permissions.AllowAny,)
+
+  def post(self, request, format=None):
+    phoneno=request.data['phoneno']
+    if User.objects.filter(email=phoneno).exists():
+      user = User.objects.filter(mobile=phoneno).first()
+      if not user.is_verified:
+        verifymail(user, request)
+        return Response({'msg': 'Please verify your account'}, status=status.HTTP_201_CREATED)
+    serializer = UserLoginOTPSendMobViewSerializer(data=request.data, context={'user': request.user})
+    serializer.is_valid(raise_exception=True)
+    return Response({'msg': 'OTP has been sent to your mobile number'}, status=status.HTTP_200_OK)
+
+#
+# class UserLoginThrOTPMobView(generics.GenericAPIView,APIView):
+#   # renderer_classes = [UserRenderer]
+#   queryset = User.objects.all()
+#   serializer_class = UserLoginThrOTPMobViewSerializer
+#   permission_classes = (permissions.AllowAny,)
+#
+#   def post(self, request, format=None):
+#     serializer = UserLoginThrOTPMobViewSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     user = serializer.save()
+#     token = get_tokens_for_user(user)
+#     return Response({'token': token, 'msg': 'Login Successful','name':user.first_name +' '+ user.last_name}, status=status.HTTP_201_CREATED)
+#

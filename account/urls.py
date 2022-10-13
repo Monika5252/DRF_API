@@ -20,6 +20,8 @@ urlpatterns = [
     path('datadelete/<int:pk>/',views.datadelete),
     path('login/',LoginView.as_view(), name='login'),
     path('validate/<uid>/<token>/',views.validate, name='login'),
+    path('loginsentotpmob/', views.UserLoginOTPSendMobView.as_view(), name='loginsentotpmob'),
+    # path('loginthrotpmob/', views.UserLoginThrOTPMobView.as_view(), name='loginthrotpmob'),
 
 ]
 
